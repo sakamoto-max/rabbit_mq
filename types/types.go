@@ -1,9 +1,11 @@
 package types
 
-import "time"
+import (
+	"time"
+)
 
 type Data struct {
-	Id            string         `db:"id"`
+	DbId          string         `db:"id"`
 	TargetService string         `db:"target_service"`
 	CreatedBy     string         `db:"created_by"`
 	Task          string         `db:"task"`
