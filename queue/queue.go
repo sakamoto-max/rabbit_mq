@@ -65,12 +65,10 @@ func (m *MessageQueue) Publish(ctx context.Context, data *[]byte) error {
 		ContentType:   ApplicationJsonType,
 		Body:          *data,
 	}
-
 	err := m.Ch.PublishWithContext(ctx, "", m.queue.Name, false, false, msg)
 	if err != nil {
 		return fmt.Errorf("error in publishing : %w", err)
 	}
-
 	return nil
 }
 
