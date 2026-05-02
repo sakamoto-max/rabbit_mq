@@ -92,7 +92,7 @@ func createChannel(conn *amqp.Connection) *amqp.Channel {
 	return ch
 }
 func createQueue(ch *amqp.Channel, queueName string) amqp.Queue {
-	queue, err := ch.QueueDeclare(queueName, false, false, false, false, nil)
+	queue, err := ch.QueueDeclare(queueName, true, false, false, false, nil)
 	if err != nil {
 		log.Fatalf("error creating %v : %v", queue.Name, err)
 	}
