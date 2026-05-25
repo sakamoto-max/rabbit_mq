@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"github.com/sakamoto-max/rabbit_mq/utils"
+	// "github.com/sakamoto-max/rabbit_mq/utils"
 )
 
 var (
@@ -34,29 +34,29 @@ func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
 	return &MessageQueue{Ch: channel, queue: &queue}
 }
 
-type TaskStatus struct {
-	Id            string
-	SentBy        string
-	TargetService string
-	taskName      string
-	dbUpdateValue string
-	taskStatus    string
-}
+// type TaskStatus struct {
+// 	Id            string
+// 	SentBy        string
+// 	TargetService string
+// 	taskName      string
+// 	dbUpdateValue string
+// 	taskStatus    string
+// }
 
-func NewTaskStatus(id string, sentBy string, targerService string, taskName string, dbUpdateValue string) *TaskStatus {
-	return &TaskStatus{
-		Id:            id,
-		SentBy:        sentBy,
-		TargetService: targerService,
-		taskName:      taskName,
-		dbUpdateValue: dbUpdateValue,
-	}
-}
+// func NewTaskStatus(id string, sentBy string, targerService string, taskName string, dbUpdateValue string) *TaskStatus {
+// 	return &TaskStatus{
+// 		Id:            id,
+// 		SentBy:        sentBy,
+// 		TargetService: targerService,
+// 		taskName:      taskName,
+// 		dbUpdateValue: dbUpdateValue,
+// 	}
+// }
 
-func (t *TaskStatus) ConvertToBytes() *[]byte {
-	dataInBytes, _ := utils.ConvertIntoBytes(t)
-	return dataInBytes
-}
+// func (t *TaskStatus) ConvertToBytes() *[]byte {
+// 	dataInBytes, _ := utils.ConvertIntoBytes(t)
+// 	return dataInBytes
+// }
 
 type ConsumerChan chan<- amqp.Delivery
 
