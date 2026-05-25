@@ -8,7 +8,7 @@ import (
 type Data struct {
 	DbId          string
 	TaskName      string
-	Payload       map[string]string
+	Data map[string]string
 	TaskStatus    string
 	SentBy        string
 	TargetService string
