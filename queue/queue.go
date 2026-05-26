@@ -34,37 +34,16 @@ func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
 	return &MessageQueue{Ch: channel, queue: &queue}
 }
 
-// type TaskStatus struct {
-// 	Id            string
-// 	SentBy        string
-// 	TargetService string
-// 	taskName      string
-// 	dbUpdateValue string
-// 	taskStatus    string
-// }
-
-// func NewTaskStatus(id string, sentBy string, targerService string, taskName string, dbUpdateValue string) *TaskStatus {
-// 	return &TaskStatus{
-// 		Id:            id,
-// 		SentBy:        sentBy,
-// 		TargetService: targerService,
-// 		taskName:      taskName,
-// 		dbUpdateValue: dbUpdateValue,
-// 	}
-// }
-
-// func (t *TaskStatus) ConvertToBytes() *[]byte {
-// 	dataInBytes, _ := utils.ConvertIntoBytes(t)
-// 	return dataInBytes
-// }
-
 type ConsumerChan chan<- amqp.Delivery
 
 func (m *MessageQueue) Publish(ctx context.Context, data *[]byte) error {
+	fmt.Println("data in bytes", data)
 	msg := amqp.Publishing{
 		ContentType:   ApplicationJsonType,
 		Body:          *data,
 	}
+	fmt.Println("publishing", msg)
+	fmt.Println("queue name", m.queue.Name)
 	err := m.Ch.PublishWithContext(ctx, "", m.queue.Name, false, false, msg)
 	if err != nil {
 		return fmt.Errorf("error in publishing : %w", err)
