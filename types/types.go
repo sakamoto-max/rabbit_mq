@@ -5,12 +5,13 @@ import (
 	"fmt"
 )
 
+// format for data when sending it between queues
 type Data struct {
 	DbId          string
 	TaskName      string
-	Data map[string]string
-	TaskStatus    string
 	SentBy        string
+	Payload       map[string]any
+	TaskStatus    string
 	TargetService string
 }
 

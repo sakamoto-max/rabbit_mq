@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	amqp "github.com/rabbitmq/amqp091-go"
-	// "github.com/sakamoto-max/rabbit_mq/utils"
 )
 
 var (
@@ -51,10 +50,10 @@ func (m *MessageQueue) Publish(ctx context.Context, data *[]byte) error {
 	return nil
 }
 
-func (m *MessageQueue) Consume(queueName string) (<-chan amqp.Delivery, error) {
-	consumerChan, err := m.Ch.Consume(queueName, "", true, false, false, false, nil)
+func (m *MessageQueue) Consume() (<-chan amqp.Delivery, error) {
+	consumerChan, err := m.Ch.Consume(m.queue.Name, "", true, false, false, false, nil)
 	if err != nil {
-		return consumerChan, fmt.Errorf("error occured while consuming from queue %v : %w", queueName, err)
+		return consumerChan, fmt.Errorf("error occured while consuming from queue %v : %w", m.queue.Name, err)
 	}
 
 	return consumerChan, nil
