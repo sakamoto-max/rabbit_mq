@@ -36,13 +36,10 @@ func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
 type ConsumerChan chan<- amqp.Delivery
 
 func (m *MessageQueue) Publish(ctx context.Context, data *[]byte) error {
-	fmt.Println("data in bytes", data)
 	msg := amqp.Publishing{
 		ContentType:   ApplicationJsonType,
 		Body:          *data,
 	}
-	fmt.Println("publishing", msg)
-	fmt.Println("queue name", m.queue.Name)
 	err := m.Ch.PublishWithContext(ctx, "", m.queue.Name, false, false, msg)
 	if err != nil {
 		return fmt.Errorf("error in publishing : %w", err)
