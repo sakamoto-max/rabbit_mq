@@ -13,6 +13,7 @@ type Data struct {
 	Payload       map[string]any
 	TaskStatus    string
 	TargetService string
+	Err           error
 }
 
 func (d *Data) ConvertIntoBytes() (*[]byte, error) {
