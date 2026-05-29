@@ -7,13 +7,13 @@ import (
 
 // format for data when sending it between queues
 type Data struct {
-	DbId          string
-	TaskName      string
-	SentBy        string
-	Payload       map[string]any
-	TaskStatus    string
-	TargetService string
-	Err           error
+	DbId          string         `json:"dbId"`
+	TaskName      string         `json:"taskName"`
+	SentBy        string         `json:"sentBy"`
+	Payload       map[string]any `json:"payload"`
+	TaskStatus    string         `json:"status"`
+	TargetService string         `json:"targetService"`
+	Err           error          `json:"err"`
 }
 
 func (d *Data) ConvertIntoBytes() (*[]byte, error) {
