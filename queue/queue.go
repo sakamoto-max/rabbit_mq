@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -26,19 +27,17 @@ type MessageQueue struct {
 	queue *amqp.Queue
 }
 
-func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
+func NewMessageQueue(conn *amqp.Connection, QueueName string) QueueIFace {
 	channel := createChannel(conn)
 	queue := createQueue(channel, QueueName)
 
 	return &MessageQueue{Ch: channel, queue: &queue}
 }
 
-type ConsumerChan chan<- amqp.Delivery
-
 func (m *MessageQueue) Publish(ctx context.Context, data *[]byte) error {
 	msg := amqp.Publishing{
-		ContentType:   ApplicationJsonType,
-		Body:          *data,
+		ContentType: ApplicationJsonType,
+		Body:        *data,
 	}
 	err := m.Ch.PublishWithContext(ctx, "", m.queue.Name, false, false, msg)
 	if err != nil {
@@ -64,6 +63,7 @@ func createChannel(conn *amqp.Connection) *amqp.Channel {
 
 	return ch
 }
+
 func createQueue(ch *amqp.Channel, queueName string) amqp.Queue {
 	queue, err := ch.QueueDeclare(queueName, true, false, false, false, nil)
 	if err != nil {
@@ -71,4 +71,9 @@ func createQueue(ch *amqp.Channel, queueName string) amqp.Queue {
 	}
 
 	return queue
+}
+
+type QueueIFace interface {
+	Publish(ctx context.Context, data *[]byte) error
+	Consume() (<-chan amqp.Delivery, error)
 }
