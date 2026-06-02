@@ -27,7 +27,7 @@ type MessageQueue struct {
 	queue *amqp.Queue
 }
 
-func NewMessageQueue(conn *amqp.Connection, QueueName string) QueueIFace {
+func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
 	channel := createChannel(conn)
 	queue := createQueue(channel, QueueName)
 
@@ -55,6 +55,7 @@ func (m *MessageQueue) Consume() (<-chan amqp.Delivery, error) {
 	return consumerChan, nil
 }
 
+
 func createChannel(conn *amqp.Connection) *amqp.Channel {
 	ch, err := conn.Channel()
 	if err != nil {
@@ -73,7 +74,3 @@ func createQueue(ch *amqp.Channel, queueName string) amqp.Queue {
 	return queue
 }
 
-type QueueIFace interface {
-	Publish(ctx context.Context, data *[]byte) error
-	Consume() (<-chan amqp.Delivery, error)
-}
