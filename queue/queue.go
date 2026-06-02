@@ -55,7 +55,6 @@ func (m *MessageQueue) Consume() (<-chan amqp.Delivery, error) {
 	return consumerChan, nil
 }
 
-
 func createChannel(conn *amqp.Connection) *amqp.Channel {
 	ch, err := conn.Channel()
 	if err != nil {
@@ -73,4 +72,10 @@ func createQueue(ch *amqp.Channel, queueName string) amqp.Queue {
 
 	return queue
 }
+
+type QueueIface interface {
+	Publish(ctx context.Context, data *[]byte) error
+	Consume() (<-chan amqp.Delivery, error)
+}
+
 
