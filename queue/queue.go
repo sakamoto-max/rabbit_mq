@@ -27,7 +27,7 @@ type MessageQueue struct {
 	queue *amqp.Queue
 }
 
-func NewMessageQueue(conn *amqp.Connection, QueueName string) *MessageQueue {
+func NewMessageQueue(conn *amqp.Connection, QueueName string) QueueIface {
 	channel := createChannel(conn)
 	queue := createQueue(channel, QueueName)
 
