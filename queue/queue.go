@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -13,13 +12,19 @@ var (
 	ApplicationJsonType string = "application/json"
 )
 
-func NewConn() *amqp.Connection {
-	conn, err := amqp.Dial(os.Getenv("MQ_URL"))
+func NewConn(connStr string) (*amqp.Connection, error) {
+
+	url, err := amqp.ParseURI(connStr)
 	if err != nil {
-		log.Fatalf("error opening a connection to rabbit mq : %v", err)
+		return nil, fmt.Errorf("failed to parse the url : %w", err)
 	}
 
-	return conn
+	conn, err := amqp.Dial(url.String())
+	if err != nil {
+		return nil, fmt.Errorf("failed to open rabbit mq connection : %w", err)
+	}
+
+	return conn, nil
 }
 
 type MessageQueue struct {
@@ -77,5 +82,3 @@ type QueueIface interface {
 	Publish(ctx context.Context, data *[]byte) error
 	Consume() (<-chan amqp.Delivery, error)
 }
-
-
